@@ -362,6 +362,7 @@ class PolygonItemInserter(ItemInserter):
         ItemInserter.__init__(self, labeltool, scene, default_properties,
                               prefix, commit)
         self._item = None
+        self._aiming = True
 
     def _removeLastPointAndFinish(self, image_item):
         polygon = self._item.polygon()
@@ -376,8 +377,9 @@ class PolygonItemInserter(ItemInserter):
         self.annotationFinished.emit()
         self._item = None
         self._scene.clearMessage()
+        self._ann.update(self._default_properties)
 
-        self.inserterFinished.emit()
+        #self.inserterFinished.emit()
 
     def mousePressEvent(self, event, image_item):
         pos = event.scenePos()
@@ -391,9 +393,14 @@ class PolygonItemInserter(ItemInserter):
             self._scene.setMessage("Press Enter to finish the polygon.")
 
         polygon = self._item.polygon()
-        polygon.append(pos)
+        polygon.append(pos)        
         self._item.setPolygon(polygon)
 
+        event.accept()
+        
+    def mouseReleaseEvent(self, event, image_item):
+        self._removeLastPointAndFinish(image_item)
+        self._current_image_item = image_item
         event.accept()
 
     def mouseDoubleClickEvent(self, event, image_item):
@@ -406,7 +413,7 @@ class PolygonItemInserter(ItemInserter):
         # away.
         self._removeLastPointAndFinish(image_item)
 
-        event.accept()
+        #event.accept()
 
 
     def mouseMoveEvent(self, event, image_item):
@@ -415,6 +422,8 @@ class PolygonItemInserter(ItemInserter):
             polygon = self._item.polygon()
             assert polygon.size() > 0
             polygon[-1] = pos
+            polygon.append(pos)
+            QGraphicsPolygonItem(polygon)
             self._item.setPolygon(polygon)
 
         event.accept()
@@ -428,6 +437,7 @@ class PolygonItemInserter(ItemInserter):
             # to the polygon when pressing the mouse button. At this point,
             # we want to throw it away.
             self._removeLastPointAndFinish(image_item)
+        event.accept()
 
     def abort(self):
         if self._item is not None:
