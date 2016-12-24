@@ -2,7 +2,8 @@
 import sys
 from os.path import dirname, realpath
 sys.path.insert(1, dirname(dirname(dirname(realpath(__file__)))))
-from PyQt4.QtGui import QApplication
+#from PyQt4.QtGui import QApplication
+from PyQt5.QtWidgets import QApplication
 from sloth.core.labeltool import LabelTool
 from sloth import APP_NAME, ORGANIZATION_NAME, ORGANIZATION_DOMAIN
 

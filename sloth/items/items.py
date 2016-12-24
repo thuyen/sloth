@@ -1,5 +1,6 @@
 import logging
-from PyQt4.Qt import *
+#from PyQt4.Qt import *
+from PyQt5.Qt import *
 
 
 LOG = logging.getLogger(__name__)

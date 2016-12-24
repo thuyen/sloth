@@ -1,5 +1,7 @@
-from PyQt4.QtCore import QSize
-from PyQt4.QtGui import QVBoxLayout
+#from PyQt4.QtCore import QSize
+#from PyQt4.QtGui import QVBoxLayout
+from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QVBoxLayout
 
 
 # This is really really ugly, but the QDockWidget for some reason does not notice when

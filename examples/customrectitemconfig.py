@@ -1,5 +1,8 @@
-from PyQt4.QtGui import QPen
-from PyQt4.Qt import Qt
+#from PyQt4.QtGui import QPen
+#from PyQt4.Qt import Qt
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 from sloth.items import RectItem
 
 
