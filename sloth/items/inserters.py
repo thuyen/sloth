@@ -6,6 +6,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 
+
 class ItemInserter(QObject):
     """
     The base class for all item insertion handlers.
@@ -380,7 +381,7 @@ class PolygonItemInserter(ItemInserter):
         self._item = None
         self._scene.clearMessage()
 
-        self.inserterFinished.emit()
+        #self.inserterFinished.emit()
 
     def mousePressEvent(self, event, image_item):
         pos = event.scenePos()
@@ -407,7 +408,26 @@ class PolygonItemInserter(ItemInserter):
         # Even then, the last point of the polygon is duplicate as it would be
         # shortly after a single mouse press. At this point, we want to throw it
         # away.
-        self._removeLastPointAndFinish(image_item)
+        #self._removeLastPointAndFinish(image_item)
+        pass
+
+        event.accept()
+
+    def mouseRightClickEvent(self, event, image_item):
+        """Finish the polygon when the user double clicks."""
+
+        # No need to add the position of the click, as a single mouse
+        # press event added the point already.
+        # Even then, the last point of the polygon is duplicate as it would be
+        # shortly after a single mouse press. At this point, we want to throw it
+        # away.
+
+        polygon = self._item.polygon()
+        if len(polygon) > 1:
+            n = polygon.size()
+            polygon.remove(n-1)
+            self._item.setPolygon(polygon)
+            QGraphicsPolygonItem(polygon)
 
         event.accept()
 
@@ -431,6 +451,15 @@ class PolygonItemInserter(ItemInserter):
             # to the polygon when pressing the mouse button. At this point,
             # we want to throw it away.
             self._removeLastPointAndFinish(image_item)
+
+        if event.key() == Qt.Key_Q and self._item is not None:
+            polygon = self._item.polygon()
+            if len(polygon) > 1:
+                n = polygon.size()
+                polygon.remove(n-1)
+                self._item.setPolygon(polygon)
+                QGraphicsPolygonItem(polygon)
+
 
     def abort(self):
         if self._item is not None:
