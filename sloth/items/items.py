@@ -763,10 +763,10 @@ class PolygonItem(BaseItem):
     def __init__(self, model_item=None, prefix="", parent=None):
         BaseItem.__init__(self, model_item, prefix, parent)
 
-        # Make it non-movable for now
-        self.setFlags(QGraphicsItem.ItemIsSelectable |
-                      QGraphicsItem.ItemSendsGeometryChanges |
-                      QGraphicsItem.ItemSendsScenePositionChanges)
+        ## Make it non-movable for now
+        #self.setFlags(QGraphicsItem.ItemIsSelectable |
+        #              QGraphicsItem.ItemSendsGeometryChanges |
+        #              QGraphicsItem.ItemSendsScenePositionChanges)
         self._polygon = None
 
         self._updatePolygon(self._dataToPolygon(self._model_item))
