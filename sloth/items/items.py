@@ -831,3 +831,37 @@ class PolygonItem(BaseItem):
     def dataChange(self):
         polygon = self._dataToPolygon(self._model_item)
         self._updatePolygon(polygon)
+
+    def mousePressEvent(self, event):
+        if event.button():
+            self._start_pos = event.scenePos()
+            self._start_polygon = self._polygon
+            self._move = True
+        BaseItem.mousePressEvent(self, event)
+
+    def mouseMoveEvent(self, event):
+        if self._move:
+            diff = event.scenePos() - self._start_pos
+
+            polygon = QPolygonF()
+            for p in self._start_polygon:
+              polygon.append(p + diff)
+
+            xn = [str(p.x()) for p in polygon]
+            yn = [str(p.y()) for p in polygon]
+
+            xn = ';'.join(xn)
+            yn = ';'.join(yn)
+
+            self._updatePolygon(polygon)
+            self.updateModel({'xn':xn, 'yn':yn})
+            event.accept()
+        else:
+            BaseItem.mouseMoveEvent(self, event)
+
+    def mouseReleaseEvent(self, event):
+        if self._move:
+            self._move = False
+            self._start_pos = None
+            self._start_polygon = None
+        BaseItem.mouseReleaseEvent(self, event)
